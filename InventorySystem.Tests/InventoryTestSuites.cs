@@ -45,5 +45,29 @@
             Assert.NotNull(exists);
             Assert.Equal("P120", exists.Id);
         }
+
+        [Fact]
+        public void ProcessOrder_ValidQuantityWithTax_CalculatesTotalAndDeductsStock()
+        {
+            // Arrange
+            Product product = new Product
+            {
+                Id = "P100",
+                Name = "Sony Headphones",
+                UnitPrice = 350.00m,
+                StockQuantity = 10
+            };
+            _orderService.AddProduct(product);
+            int quantity = 5;
+            decimal taxRate = 0.05m;
+
+            // Act
+            OrderResult order = _orderService.ProcessOrder(product.Id, quantity, taxRate);
+
+            // Assert
+            Assert.True(order.IsSuccess);
+            Assert.Equal(1837.50m, order.TotalCost);
+            Assert.Equal(5, product.StockQuantity);
+        }
     }
 }
