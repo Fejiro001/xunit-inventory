@@ -69,5 +69,30 @@
             Assert.Equal(1837.50m, order.TotalCost);
             Assert.Equal(5, product.StockQuantity);
         }
+
+        // === Edge Cases / Boundaries ===
+        [Fact]
+        public void ProcessOrder_QuantityIsZero_ReturnsSuccessWithZeroCost()
+        {
+            // Arrange
+            Product product = new Product
+            {
+                Id = "P312",
+                Name = "Logitech Mouse",
+                UnitPrice = 250.00m,
+                StockQuantity = 15
+            };
+            _orderService.AddProduct(product);
+            int quantity = 0;
+            decimal taxRate = 0.0m;
+
+            // Act
+            OrderResult order = _orderService.ProcessOrder(product.Id, quantity, taxRate);
+
+            // Assert
+            Assert.True(order.IsSuccess);
+            Assert.Equal(0.00m, order.TotalCost);
+            Assert.Equal(15, product.StockQuantity);
+        }
     }
 }
