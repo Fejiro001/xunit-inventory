@@ -94,5 +94,28 @@
             Assert.Equal(0.00m, order.TotalCost);
             Assert.Equal(15, product.StockQuantity);
         }
+
+        [Fact]
+        public void ProcessOrder_WithDiscountBoundary10Items_AppliesTenPercentDiscount()
+        {
+            // Arrange
+            Product product = new Product
+            {
+                Id = "P120",
+                Name = "Ninja Air Fryer",
+                UnitPrice = 500.00m,
+                StockQuantity = 100
+            };
+            _orderService.AddProduct(product);
+            int quantity = 10;
+            decimal taxRate = 0.0m;
+
+            // Act
+            OrderResult order = _orderService.ProcessOrder(product.Id, quantity, taxRate);
+
+            // Assert
+            Assert.True(order.IsSuccess);
+            Assert.Equal(4500.00m, order.TotalCost);
+        }
     }
 }
