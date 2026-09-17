@@ -117,5 +117,33 @@
             Assert.True(order.IsSuccess);
             Assert.Equal(4500.00m, order.TotalCost);
         }
+
+        [Fact]
+        public void AddProduct_DuplicateProductId_DoesNotOverwriteExisitingProduct()
+        {
+            // Arrange
+            Product productOne = new Product
+            {
+                Id = "P150",
+                Name = "Standing Desk",
+                UnitPrice = 1200.00m,
+                StockQuantity = 25
+            };
+            Product productTwo = new Product
+            {
+                Id = "P150",
+                Name = "Samsung Watch",
+                UnitPrice = 500.00m,
+                StockQuantity = 50
+            };
+
+            // Act
+            _orderService.AddProduct(productOne);
+            _orderService.AddProduct(productTwo);
+
+            // Assert
+            var existingProduct = _orderService.GetProduct("P150");
+            Assert.Equal("Standing Desk", existingProduct.Name);
+        }
     }
 }
