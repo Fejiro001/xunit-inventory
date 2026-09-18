@@ -119,7 +119,7 @@
         }
 
         [Fact]
-        public void AddProduct_DuplicateProductId_DoesNotOverwriteExisitingProduct()
+        public void AddProduct_DuplicateProductId_DoesNotOverwriteExistingProduct()
         {
             // Arrange
             Product productOne = new Product
@@ -144,6 +144,17 @@
             // Assert
             var existingProduct = _orderService.GetProduct("P150");
             Assert.Equal("Standing Desk", existingProduct.Name);
+        }
+
+        // === Exception Handling ===
+        [Fact]
+        public void AddProduct_NullProduct_ThrowsArgumentException()
+        {
+            // Arrange
+            Product? product = null;
+
+            // Assert & Act
+            Assert.Throws<ArgumentException>(() => _orderService.AddProduct(product));
         }
     }
 }
