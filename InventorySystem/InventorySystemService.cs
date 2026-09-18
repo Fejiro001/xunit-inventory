@@ -24,7 +24,10 @@
             if (product == null || string.IsNullOrWhiteSpace(product.Id))
                 throw new ArgumentException("Invalid product details.");
 
-            _inventory[product.Id] = product;
+            if (!_inventory.ContainsKey(product.Id))
+            {
+                _inventory[product.Id] = product;
+            }
         }
 
         public Product? GetProduct(string productId)
