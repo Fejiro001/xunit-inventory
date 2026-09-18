@@ -156,5 +156,21 @@
             // Assert & Act
             Assert.Throws<ArgumentException>(() => _orderService.AddProduct(product));
         }
+
+        [Fact]
+        public void AddProduct_MissingProductId_ThrowsArgumentException()
+        {
+            // Arrange
+            Product product = new Product
+            {
+                Id = " ",
+                Name = "SD Card",
+                UnitPrice = 50.00m,
+                StockQuantity = 10
+            };
+
+            // Assert & Act
+            Assert.Throws<ArgumentException>(() => _orderService.AddProduct(product));
+        }
     }
 }
